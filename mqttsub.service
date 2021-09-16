@@ -1,0 +1,14 @@
+[Unit]
+Description=MQTT sub script
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/pi/scripts
+User=pi
+Type=simple
+ExecStart=/usr/bin/python /home/pi/scripts/MQTT_SUB.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
