@@ -1,4 +1,4 @@
-import paho.mqtt.client as paho #import the client1
+import paho.mqtt.client as paho
 from datetime import datetime
 import requests
 import sys
@@ -6,8 +6,21 @@ import time
 import json
 import LOG
 import ALARM
+import yaml
 
-url = 'http://localhost:8000/api/data'
+with open("config.yaml", "r") as yalm_data:
+    config_data = yaml.load(yalm_data)
+
+url = config_data["address_post"]
+token = config_data["token"]
+
+headers={'Authorization': "Bearer {}".format(token)}
+
+temp_sensor = config_data["temp_sensor"]
+solhum_sensor = config_data["solhum_sensor"]
+airhum_sensor = config_data["airhum_sensor"]
+light_sensor = config_data["light_sensor"]
+
 
 red_light = 17
 green_light = 18
@@ -24,27 +37,32 @@ def onMessage(client, userdata, msg):
     j = msg.payload.decode()
     p = Payload(j)
 
-    temperature = {'type' : 'Temperature', 'value' : p.temperature}
-    humair = {'type' : 'Air Humidity', 'value' : p.humair}
-    humsol = {'type' : 'Ground Humidity', 'value' : p.humsol}
-    light = {'type' : 'Luminosity', 'value' : p.light}
+    temperature = {'data' : p.temperature, 'sensor' : temp_sensor}
+	humsol = {'data' : p.humsol, 'sensor' : solhum_sensor}
+    humair = {'data' : p.humair, 'sensor' : airhum_sensor}
+    light = {'data' : p.light, 'sensor' : light_sensor}
     
     try:
-        w = requests.post(url, data = temperature)
-        x = requests.post(url, data = humair)
-        y = requests.post(url, data = humsol)
-        z = requests.post(url, data = light)        
+        w = requests.post(url, headers=headers, data = temperature)
+        x = requests.post(url, headers=headers, data = humair)
+        y = requests.post(url, headers=headers, data = humsol)
+        z = requests.post(url, headers=headers, data = light)
+		ALARM.blink_light(blue_light)
+		if w.text != "Accepted":
+			ALARM.set_light(red_light,green_light)
+			LOG.write_log("error_MQTT.log", w)
+		else:
+			ALARM.set_light(green_light,red_light)
+			
     except requests.exceptions.RequestException as e:
-        LOG.write_log("error.log", e)
-    
-    ALARM.blink_light(blue_light)
+        LOG.write_log("error_MQTT.log", e)
+		ALARM.blink_light(red_light)
 
 client = paho.Client()
 client.on_message = onMessage
 
 if client.connect("localhost", 1883, 60) != 0:
-    print("Error !")
-    LOG.write_log("MQTT.log", "An error occured. Can't connect to Broker")
+    LOG.write_log("error_MQTT.log", 'An error occured. Can\'t connect to Broker')
     ALARM.set_light(red_light,green_light)
     sys.exit(-1)
 
@@ -53,6 +71,5 @@ client.subscribe("mqtt/esp32")
 try:
     client.loop_forever()
 except:
-    print("Disconnecting from broker")
-    LOG.write_log("error.log", "An error occured. Disconnecting from broker")
+    LOG.write_log("error_MQTT.log", 'An error occured. Disconnecting from broker')
     ALARM.set_light(red_light,green_light)
