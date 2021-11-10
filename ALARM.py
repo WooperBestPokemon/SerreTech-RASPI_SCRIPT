@@ -15,5 +15,4 @@ def blink_light(pin_number):
     GPIO.setup(pin_number,GPIO.OUT)
     GPIO.output(pin_number,GPIO.HIGH)
     time.sleep(0.25)
-    GPIO.setup(pin_number,GPIO.OUT)
     GPIO.output(pin_number,GPIO.LOW)

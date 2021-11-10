@@ -3,14 +3,23 @@ import requests
 import time
 import sys
 import LOG
+import yaml
+import json
 
-url = 'http://localhost:8000/api/water'
+with open("config.yaml", "r") as yalm_data:
+    config_data = yaml.safe_load(yalm_data)
+
+zone = config_data["zone_id"]
+url = "{}{}".format(config_data["address_water"],zone)
+token = config_data["token"]
+
+headers={'Authorization': "Bearer {}".format(token)}
 
 try:
-    x = requests.get(url)
+    x = requests.get(url, headers=headers)
     result = json.loads(x.text)
     #If it doesn't throw an error, it check if we need to add water
-    if result["water"]:
+    if result["water"] == 0:
         output = []
         #Calculating the number of seconds
         seconds = float(result["quantity"]) / 30
@@ -26,8 +35,7 @@ try:
         time.sleep(seconds)
         GPIO.output(RELAIS_1_GPIO, GPIO.HIGH)
         output.append("[-] the pump has been shutdown.")
-        LOG.write_log("pump.log", output)
+        LOG.write_log("pump_output.log", output)
         
 except requests.exceptions.RequestException as e:
-    print("Server not found !")
-    LOG.write_log("error.log", e)
+    LOG.write_log("error_pump.log", e)
