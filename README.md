@@ -32,6 +32,10 @@ This is the code repo for the final project's raspberry pi and Arduido.
   ```sh
   sudo apt install mosquitto mosquitto-clients
   ```
+* pip
+  ```sh
+  sudo apt-get install python3-pip -y
+  ```
 * paho-mqtt
   ```sh
   pip install paho-mqtt
