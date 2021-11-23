@@ -2,10 +2,7 @@
 
 This is the code repo for the final project's raspberry pi and Arduido.
 
-# Raspberry Pi 0
-
-#Automatic Installation
-_____________________
+# Automatic Installation
 
 ### Prerequisites
 
@@ -27,8 +24,7 @@ _____________________
   sudo chmod +x ./Serre_Tech_Installer.sh
   sudo ./Serre_Tech_Installer.sh
   ```
-#Manual Installation
-_____________________
+# Manual Installation
 
 ### Prerequisites
 
@@ -70,15 +66,13 @@ _____________________
    */30 * * * * python /home/pi/scripts/PUMP.py
    ```
    
-#Configuration
-_____________________
+# Configuration
 
 1. First, you need to get the token of your account via a POST request (http://testenv.pcst.xyz/api/login) and place it in the config.yaml on 'token : your_token'
 2. Next, you need to place your zone id into 'zone_id : your_zone'
 3. And lastly, you need to place your captors id into the correct captor_sensor
 
-### Debug
-_____________________
+# Debug
 
 Everything will be logged under scripts/logs.
 
