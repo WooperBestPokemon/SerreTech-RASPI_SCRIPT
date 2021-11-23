@@ -4,6 +4,32 @@ This is the code repo for the final project's raspberry pi and Arduido.
 
 # Raspberry Pi 0
 
+#Automatic Installation
+_____________________
+
+### Prerequisites
+
+* git
+  ```sh
+  sudo apt install git
+  ```
+
+### Installation
+
+1. Clone this repository in your home folder
+
+  ```sh
+  cd /home/pi
+  git clone https://github.com/WooperBestPokemon/SerreTech-RASPI_SCRIPT
+  ```
+2. Execute the installer with super user privilege
+  ```sh
+  sudo chmod +x ./Serre_Tech_Installer.sh
+  sudo ./Serre_Tech_Installer.sh
+  ```
+#Manual Installation
+_____________________
+
 ### Prerequisites
 
 * mqtt broker
@@ -44,13 +70,15 @@ This is the code repo for the final project's raspberry pi and Arduido.
    */30 * * * * python /home/pi/scripts/PUMP.py
    ```
    
-### Configuration
+#Configuration
+_____________________
 
 1. First, you need to get the token of your account via a POST request (http://testenv.pcst.xyz/api/login) and place it in the config.yaml on 'token : your_token'
 2. Next, you need to place your zone id into 'zone_id : your_zone'
 3. And lastly, you need to place your captors id into the correct captor_sensor
 
 ### Debug
+_____________________
 
 Everything will be logged under scripts/logs.
 
