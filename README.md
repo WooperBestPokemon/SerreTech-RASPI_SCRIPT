@@ -2,6 +2,8 @@
 
 This is the code repo for the final project's raspberry pi and Arduido.
 
+Please note that this is a proof of concept. It won't work except if you have the Laravel Projet on a cloud server.
+
 # Automatic Installation
 
 ### Prerequisites
@@ -81,9 +83,5 @@ This is the code repo for the final project's raspberry pi and Arduido.
 Everything will be logged under scripts/logs.
 
 The prototype is using a leds system to alert if there is a problem with the scripts.
-
-Green Light : The light will turn Green as soon as the MQTT_SUB.py starts.
-Red Light : If the light turns red and turns green right after, that mean there is a problem with the POST REQUEST (check the logs). If it stays red, that mean the script had an error and is not working anymore.
-Blue Light : Will blink when the MQTT broker is sending a POST request. If it doesn't blink every 30s, that mean the captors aren't sending any data to the MQTT Broker.
 
 ![college logo](https://www.cegepjonquiere.ca/media/tinymce/Plus/Logos%20et%20norme%20graphique/Ceg-logo-couleur.gif)

@@ -16,7 +16,7 @@ token = config_data["token"]
 headers={'Authorization': "Bearer {}".format(token)}
 
 try:
-    x = requests.get(url, headers=headers)
+    x = requests.get(url, headers=headers, verify=False)
     result = json.loads(x.text)
     #If it doesn't throw an error, it check if we need to add water
     if result["water"] == 0:
@@ -26,7 +26,7 @@ try:
 
         #Starting the pump and letting out the water
         GPIO.setmode(GPIO.BCM)
-        RELAIS_1_GPIO = 20
+        RELAIS_1_GPIO = 26
         GPIO.setup(RELAIS_1_GPIO, GPIO.OUT)
         GPIO.output(RELAIS_1_GPIO, GPIO.LOW)
         output.append("[+] The pump will be running for {} seconds...".format(seconds))
